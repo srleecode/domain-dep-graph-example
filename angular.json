@@ -1,0 +1,473 @@
+{
+  "version": 1,
+  "projects": {
+    "domain-example": {
+      "$schema": "../../node_modules/nx/schemas/project-schema.json",
+      "projectType": "application",
+      "root": "apps/domain-example",
+      "sourceRoot": "apps/domain-example/src",
+      "prefix": "domain-example",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/domain-example",
+            "index": "apps/domain-example/src/index.html",
+            "main": "apps/domain-example/src/main.ts",
+            "polyfills": "apps/domain-example/src/polyfills.ts",
+            "tsConfig": "apps/domain-example/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/domain-example/src/favicon.ico",
+              "apps/domain-example/src/assets"
+            ],
+            "styles": ["apps/domain-example/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/domain-example/src/environments/environment.ts",
+                  "with": "apps/domain-example/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "domain-example:build:production"
+            },
+            "development": {
+              "browserTarget": "domain-example:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "domain-example:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/domain-example/src/**/*.ts",
+              "apps/domain-example/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/domain-example"],
+          "options": {
+            "jestConfig": "apps/domain-example/jest.config.ts",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "domain-example-e2e": {
+      "$schema": "../../node_modules/nx/schemas/project-schema.json",
+      "root": "apps/domain-example-e2e",
+      "sourceRoot": "apps/domain-example-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/domain-example-e2e/cypress.json",
+            "devServerTarget": "domain-example:serve:development",
+            "tsConfig": "apps/domain-example-e2e/tsconfig.json"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "domain-example:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/domain-example-e2e/**/*.{js,ts}"]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": ["domain-example"]
+    },
+    "e2e-ng-test-app-test-domain": {
+      "root": "libs/ng-test-app/test-domain/.e2e",
+      "sourceRoot": "libs/ng-test-app/test-domain/.e2e/src",
+      "projectType": "library",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "libs/ng-test-app/test-domain/.e2e/cypress.config.ts",
+            "baseUrl": "./",
+            "testingType": "e2e"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": [
+              "libs/ng-test-app/test-domain/.e2e/**/*.{js,ts}"
+            ]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": [
+        "ng-test-app-test-domain-application",
+        "ng-test-app-test-domain-data-access",
+        "ng-test-app-test-domain-directive-second-test",
+        "ng-test-app-test-domain-directive-test-example",
+        "ng-test-app-test-domain-domain",
+        "ng-test-app-test-domain-feature-test-example",
+        "ng-test-app-test-domain-shell-test-example",
+        "ng-test-app-test-domain-ui-story-test-example",
+        "ng-test-app-test-domain-ui-test-example",
+        "ng-test-app-test-domain-util"
+      ]
+    },
+    "ng-test-app-second-domain-shell-test": {
+      "projectType": "library",
+      "root": "libs/ng-test-app/second-domain/shell-test",
+      "sourceRoot": "libs/ng-test-app/second-domain/shell-test/src",
+      "prefix": "ng-test-app",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+          "options": {
+            "jestConfig": "libs/ng-test-app/second-domain/shell-test/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ng-test-app/second-domain/shell-test/**/*.ts",
+              "libs/ng-test-app/second-domain/shell-test/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": [
+        "app:ng-test-app",
+        "scope:ng-test-app-second-domain",
+        "type:shell"
+      ]
+    },
+    "ng-test-app-test-domain-application": {
+      "projectType": "library",
+      "root": "libs/ng-test-app/test-domain/application",
+      "sourceRoot": "libs/ng-test-app/test-domain/application/src",
+      "prefix": "ng-test-app",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+          "options": {
+            "jestConfig": "libs/ng-test-app/test-domain/application/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ng-test-app/test-domain/application/**/*.ts",
+              "libs/ng-test-app/test-domain/application/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": [
+        "app:ng-test-app",
+        "scope:ng-test-app-test-domain",
+        "type:application"
+      ]
+    },
+    "ng-test-app-test-domain-data-access": {
+      "projectType": "library",
+      "root": "libs/ng-test-app/test-domain/data-access",
+      "sourceRoot": "libs/ng-test-app/test-domain/data-access/src",
+      "prefix": "ng-test-app",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+          "options": {
+            "jestConfig": "libs/ng-test-app/test-domain/data-access/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ng-test-app/test-domain/data-access/**/*.ts",
+              "libs/ng-test-app/test-domain/data-access/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": [
+        "app:ng-test-app",
+        "scope:ng-test-app-test-domain",
+        "type:data-access"
+      ]
+    },
+    "ng-test-app-test-domain-directive-second-test": {
+      "projectType": "library",
+      "root": "libs/ng-test-app/test-domain/directive-second-test",
+      "sourceRoot": "libs/ng-test-app/test-domain/directive-second-test/src",
+      "prefix": "ng-test-app",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+          "options": {
+            "jestConfig": "libs/ng-test-app/test-domain/directive-second-test/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ng-test-app/test-domain/directive-second-test/**/*.ts",
+              "libs/ng-test-app/test-domain/directive-second-test/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": [
+        "app:ng-test-app",
+        "scope:ng-test-app-test-domain",
+        "type:directive"
+      ]
+    },
+    "ng-test-app-test-domain-directive-test-example": {
+      "projectType": "library",
+      "root": "libs/ng-test-app/test-domain/directive-test-example",
+      "sourceRoot": "libs/ng-test-app/test-domain/directive-test-example/src",
+      "prefix": "ng-test-app",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+          "options": {
+            "jestConfig": "libs/ng-test-app/test-domain/directive-test-example/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ng-test-app/test-domain/directive-test-example/**/*.ts",
+              "libs/ng-test-app/test-domain/directive-test-example/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": [
+        "app:ng-test-app",
+        "scope:ng-test-app-test-domain",
+        "type:directive"
+      ]
+    },
+    "ng-test-app-test-domain-domain": {
+      "projectType": "library",
+      "root": "libs/ng-test-app/test-domain/domain",
+      "sourceRoot": "libs/ng-test-app/test-domain/domain/src",
+      "prefix": "ng-test-app",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ng-test-app/test-domain/domain/**/*.ts",
+              "libs/ng-test-app/test-domain/domain/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": [
+        "app:ng-test-app",
+        "scope:ng-test-app-test-domain",
+        "type:domain"
+      ]
+    },
+    "ng-test-app-test-domain-feature-test-example": {
+      "projectType": "library",
+      "root": "libs/ng-test-app/test-domain/feature-test-example",
+      "sourceRoot": "libs/ng-test-app/test-domain/feature-test-example/src",
+      "prefix": "ng-test-app",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+          "options": {
+            "jestConfig": "libs/ng-test-app/test-domain/feature-test-example/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ng-test-app/test-domain/feature-test-example/**/*.ts",
+              "libs/ng-test-app/test-domain/feature-test-example/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": [
+        "app:ng-test-app",
+        "scope:ng-test-app-test-domain",
+        "type:feature"
+      ]
+    },
+    "ng-test-app-test-domain-shell-test-example": {
+      "projectType": "library",
+      "root": "libs/ng-test-app/test-domain/shell-test-example",
+      "sourceRoot": "libs/ng-test-app/test-domain/shell-test-example/src",
+      "prefix": "ng-test-app",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+          "options": {
+            "jestConfig": "libs/ng-test-app/test-domain/shell-test-example/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ng-test-app/test-domain/shell-test-example/**/*.ts",
+              "libs/ng-test-app/test-domain/shell-test-example/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["app:ng-test-app", "scope:ng-test-app-test-domain", "type:shell"]
+    },
+    "ng-test-app-test-domain-ui-story-test-example": {
+      "projectType": "library",
+      "root": "libs/ng-test-app/test-domain/ui-story-test-example",
+      "sourceRoot": "libs/ng-test-app/test-domain/ui-story-test-example/src",
+      "prefix": "ng-test-app",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+          "options": {
+            "jestConfig": "libs/ng-test-app/test-domain/ui-story-test-example/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ng-test-app/test-domain/ui-story-test-example/**/*.ts",
+              "libs/ng-test-app/test-domain/ui-story-test-example/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["app:ng-test-app", "scope:ng-test-app-test-domain", "type:ui"]
+    },
+    "ng-test-app-test-domain-ui-test-example": {
+      "projectType": "library",
+      "root": "libs/ng-test-app/test-domain/ui-test-example",
+      "sourceRoot": "libs/ng-test-app/test-domain/ui-test-example/src",
+      "prefix": "ng-test-app",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+          "options": {
+            "jestConfig": "libs/ng-test-app/test-domain/ui-test-example/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ng-test-app/test-domain/ui-test-example/**/*.ts",
+              "libs/ng-test-app/test-domain/ui-test-example/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["app:ng-test-app", "scope:ng-test-app-test-domain", "type:ui"]
+    },
+    "ng-test-app-test-domain-util": {
+      "projectType": "library",
+      "root": "libs/ng-test-app/test-domain/util",
+      "sourceRoot": "libs/ng-test-app/test-domain/util/src",
+      "prefix": "ng-test-app",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+          "options": {
+            "jestConfig": "libs/ng-test-app/test-domain/util/jest.config.ts",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ng-test-app/test-domain/util/**/*.ts",
+              "libs/ng-test-app/test-domain/util/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["app:ng-test-app", "scope:ng-test-app-test-domain", "type:util"]
+    }
+  }
+}
